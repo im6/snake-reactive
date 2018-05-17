@@ -1,13 +1,13 @@
 module.exports = {
   mode: "development",
   devtool: "inline-source-map",
-  entry: ".src/app.ts",
+  entry: ['babel-polyfill', './src/app.ts'],
+  resolve:
+  {
+    extensions: ['.ts', '.js', '.json']
+  },
   output: {
     filename: "bundle.js"
-  },
-  resolve: {
-    // Add `.ts` and `.tsx` as a resolvable extension.
-    extensions: [".ts", ".tsx", ".js"]
   },
   module: {
     rules: [
@@ -16,5 +16,9 @@ module.exports = {
         loader: "ts-loader"
       }
     ]
+  },
+  devServer: {
+    contentBase: "./public",
+    hot: true,
   }
 };
