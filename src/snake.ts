@@ -1,6 +1,7 @@
 import { Observable, Subject, ReplaySubject, from, of, range } from 'rxjs';
 import { map, filter, switchMap } from 'rxjs/operators';
 
-range(1, 200)
-  .pipe(filter(x => x % 2 === 1), map(x => x + x))
-  .subscribe(x => console.log(x));
+
+const source = from([1, 2, 3, 4, 5])
+  .pipe(map(val => val + 10))
+  .subscribe(val => console.log(val));

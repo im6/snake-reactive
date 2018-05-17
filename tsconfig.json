@@ -1,7 +1,9 @@
 {
   "compilerOptions": {
     "sourceMap": true,
+    "allowJs": true,
     "removeComments": true,
-    "target": "es2017"
+    "target": "es2017",
+    "module": "es6"
   }
 }
