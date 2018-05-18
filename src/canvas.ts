@@ -1,3 +1,12 @@
+import { Scene } from './models';
+
+function renderBackground(ctx: CanvasRenderingContext2D) {
+  ctx.fillStyle = '#EEE';
+  ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+}
+
+// ==========  export  ==================
+
 export const COLS = 30;
 export const ROWS = 30;
 export const GAP_SIZE = 1;
@@ -11,3 +20,8 @@ export function createCanvasElem() {
   canvas.height = CANVAS_HEIGHT;
   return canvas;
 }
+
+export function renderScene(ctx: CanvasRenderingContext2D, scene: Scene) {
+  renderBackground(ctx);
+}
+
