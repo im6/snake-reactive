@@ -6,7 +6,7 @@ const canvas = createCanvasElem();
 document.body.appendChild(canvas);
 const ctx = canvas.getContext('2d');
 
-let game$ = Observable.interval(1000, animationFrame)
+let game$ = Observable.interval(3000, animationFrame)
   .subscribe({
     next: (scene) => renderScene(ctx, scene)
   });
