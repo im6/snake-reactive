@@ -1,6 +1,6 @@
 import { Observable, animationFrame } from './lib';
 import './snake.ts';
-import { createCanvasElem, renderScene } from './canvas';
+import { createCanvasElem, renderScene, renderApples, renderSnake } from './canvas';
 
 const canvas = createCanvasElem();
 document.body.appendChild(canvas);
@@ -10,6 +10,16 @@ let game$ = Observable.interval(1000, animationFrame)
   .subscribe({
     next: (ind) => {
       renderScene(ctx);
+      renderApples(ctx, [
+        {x: 1, y: 1},
+        {x: 3, y: 3},
+      ]);
+      renderSnake(ctx, [
+        {x: 4, y: 4},
+        {x: 4, y: 5},
+        {x: 4, y: 6},
+        {x: 4, y: 7},
+      ])
     },
     complete: () => console.log('game over.'),
   });
