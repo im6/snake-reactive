@@ -2,6 +2,8 @@
     "defaultSeverity": "error",
     "extends": "tslint-config-airbnb",
     "jsRules": {},
-    "rules": {},
+    "rules": {
+      "no-this-assignment": [true, {"allow-destructuring": true}]
+    },
     "rulesDirectory": []
 }

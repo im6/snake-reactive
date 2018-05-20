@@ -6,9 +6,12 @@ const canvas = createCanvasElem();
 document.body.appendChild(canvas);
 const ctx = canvas.getContext('2d');
 
-let game$ = Observable.interval(3000, animationFrame)
+let game$ = Observable.interval(1000, animationFrame)
   .subscribe({
-    complete: () => console.log('finish'),
+    next: (ind) => {
+      renderScene(ctx);
+    },
+    complete: () => console.log('game over.'),
   });
 
 

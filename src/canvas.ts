@@ -21,7 +21,7 @@ export function createCanvasElem() {
   return canvas;
 }
 
-export function renderScene(ctx: CanvasRenderingContext2D, scene: Scene) {
+export function renderScene(ctx: CanvasRenderingContext2D, scene?: Scene) {
   renderBackground(ctx);
 }
 
