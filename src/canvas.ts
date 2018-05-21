@@ -29,7 +29,14 @@ function wrapBounds(point: Point2D) {
   return point;
 }
 
+function isEmptyCell(position: Point2D, snake: Array<Point2D>): boolean {
+  return !snake.some(segment => checkCollision(segment, position));
+}
+
 // ==========  export  ==================
+export function checkCollision(a, b) {
+  return a.x === b.x && a.y === b.y;
+}
 
 export function createCanvasElem() {
   const canvas = document.createElement('canvas');
