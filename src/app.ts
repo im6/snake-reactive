@@ -1,5 +1,7 @@
-import { Observable, animationFrame } from './lib';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import {
+  Observable, animationFrame, BehaviorSubject,
+  scan, share, startWith,
+} from './lib';
 import './snake.ts';
 import { createCanvasElem, renderScene, renderApples, renderSnake } from './canvas';
 import { nextDirection } from './util';
@@ -41,11 +43,12 @@ const subscribe = keydownSource.subscribe(val => {
 
 let length$ = new BehaviorSubject<number>(SNAKE_LENGTH);
 
-//let snakeLength$ = length$.pipe(
-//  scan((step, snakeLength) => snakeLength + step),
-//  share()
-//);
+let snakeLength$ = length$.pipe(
+  scan((step, snakeLength) => snakeLength + step),
+  share()
+);
 
-//let score$ = snakeLength$
-//  .startWith(0)
-//  .scan((score, _) => score + POINTS_PER_APPLE);
+let score$ = snakeLength$.pipe(
+  startWith(0),
+  scan((score, _) => score + POINTS_PER_APPLE),
+);
