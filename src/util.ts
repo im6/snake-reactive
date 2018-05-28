@@ -1,7 +1,7 @@
 import { Scene, Point2D } from './models';
 
 export function nextDirection(previous, next) {
-  let isOpposite = (previous: Point2D, next: Point2D) => {
+  const isOpposite = (previous: Point2D, next: Point2D) => {
     return next.x === previous.x * -1 || next.y === previous.y * -1;
   };
 

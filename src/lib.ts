@@ -12,5 +12,5 @@ export {
   skip,
   switchMap,
   takeWhile,
-  first
+  first,
 } from 'rxjs/operators';

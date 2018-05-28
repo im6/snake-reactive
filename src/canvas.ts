@@ -1,9 +1,8 @@
-import { Scene } from './models';
+import { Scene, Point2D } from './models';
 import {
   CELL_SIZE, GAP_SIZE, CANVAS_HEIGHT, CANVAS_WIDTH, APPLE_COLOR,
   SNAKE_BODY_COLOR, SNAKE_HEAD_COLOR, COLS, ROWS,
 } from './config';
-import { Point2D } from './models';
 
 function renderBackground(ctx: CanvasRenderingContext2D) {
   ctx.fillStyle = '#EEE';
@@ -18,7 +17,7 @@ function paintCell(ctx: CanvasRenderingContext2D, point: Point2D, color: string)
   ctx.fillRect(x, y, CELL_SIZE, CELL_SIZE);
 }
 
-function getSnakeCellColor(index: number){
+function getSnakeCellColor(index: number) {
   return index === 0 ? SNAKE_HEAD_COLOR : SNAKE_BODY_COLOR;
 }
 
@@ -29,7 +28,7 @@ function wrapBounds(point: Point2D) {
   return point;
 }
 
-function isEmptyCell(position: Point2D, snake: Array<Point2D>): boolean {
+function isEmptyCell(position: Point2D, snake: Point2D[]): boolean {
   return !snake.some(segment => checkCollision(segment, position));
 }
 
@@ -53,6 +52,6 @@ export function renderApples(ctx: CanvasRenderingContext2D, apples: Point2D[]) {
   apples.forEach(apple => paintCell(ctx, apple, APPLE_COLOR));
 }
 
-export function renderSnake(ctx: CanvasRenderingContext2D, snake: Array<Point2D>) {
+export function renderSnake(ctx: CanvasRenderingContext2D, snake: Point2D[]) {
   snake.forEach((segment, index) => paintCell(ctx, wrapBounds(segment), getSnakeCellColor(index)));
 }

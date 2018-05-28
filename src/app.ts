@@ -24,7 +24,7 @@ const game$ = Observable.interval(1000, animationFrame)
         { x: 4, y: 5 },
         { x: 4, y: 6 },
         { x: 4, y: 7 },
-      ])
+      ]);
     },
     complete: () => console.log('game over.'),
   });
@@ -37,7 +37,7 @@ const keydownSource = Observable.fromEvent(document, 'keydown')
   .startWith(INITIAL_DIRECTION)
   .distinctUntilChanged();
 
-const subscribe = keydownSource.subscribe(val => {
+const subscribe = keydownSource.subscribe((val) => {
   console.log(val);
 });
 
@@ -45,7 +45,7 @@ const length$ = new BehaviorSubject<number>(SNAKE_LENGTH);
 
 const snakeLength$ = length$.pipe(
   scan((step, snakeLength) => snakeLength + step),
-  share()
+  share(),
 );
 
 const score$ = snakeLength$.pipe(
