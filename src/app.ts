@@ -34,7 +34,7 @@ const score$ = snakeLength$.pipe(
   scan((score, _) => score + POINTS_PER_APPLE),
 );
 
-let scene$ = combineLatest(score$, (score) => ({ score }));
+const scene$ = combineLatest(score$, (score) => { score; });
 
 const game$ = Observable.interval(1000, animationFrame)
   .subscribe({
