@@ -1,6 +1,7 @@
 import {
   Observable, animationFrame, BehaviorSubject,
   scan, share, startWith, combineLatest, takeWhile,
+  of, map, interval,
 } from './lib';
 import './snake.ts';
 import { createCanvasElem, renderScene, renderApples, renderSnake } from './canvas';
@@ -35,10 +36,14 @@ const score$ = snakeLength$.pipe(
 );
 
 const scene$ = combineLatest(score$, (score) => { score; });
-
-const game$ = Observable.interval(1000, animationFrame)
+const game$ = of('Start Game')
+  .pipe(
+    map(() => interval(11000, animationFrame)),
+    takeWhile(scene => true),
+  )
   .subscribe({
-    next: (ind) => {
+    next: (scene) => {
+      console.log(scene);
       renderScene(ctx);
       renderApples(ctx, [
         { x: 1, y: 1 },
