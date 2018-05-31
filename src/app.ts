@@ -1,7 +1,7 @@
 import {
   Observable, animationFrame, BehaviorSubject,
   scan, share, startWith, combineLatest, takeWhile,
-  of, map, interval,
+  of, map, interval, tap,
 } from './lib';
 import './snake.ts';
 import { createCanvasElem, renderScene, renderApples, renderSnake } from './canvas';
