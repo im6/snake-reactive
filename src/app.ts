@@ -36,11 +36,7 @@ const score$ = snakeLength$.pipe(
 );
 
 const scene$ = combineLatest(score$, (score) => { score; });
-const game$ = of('Start Game')
-  .pipe(
-    map(() => interval(11000, animationFrame)),
-    takeWhile(scene => true),
-  )
+const game$ = interval(1000, animationFrame)
   .subscribe({
     next: (scene) => {
       console.log(scene);
