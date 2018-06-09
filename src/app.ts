@@ -6,6 +6,7 @@ import {
 import './snake.ts';
 import { createCanvasElem, renderScene, renderApples, renderSnake } from './canvas';
 import { nextDirection } from './util';
+import { move } from './snake';
 import { DIRECTIONS, INITIAL_DIRECTION, SNAKE_LENGTH, POINTS_PER_APPLE } from './config';
 
 const canvas = createCanvasElem();
@@ -19,11 +20,11 @@ const keydownSource = Observable.fromEvent(document, 'keydown')
   .startWith(INITIAL_DIRECTION)
   .distinctUntilChanged();
 
-const subscribe = keydownSource.subscribe((val) => {
-  console.log(val);
-});
+const tickSource = interval(1000, animationFrame);
 
 const length$ = new BehaviorSubject<number>(SNAKE_LENGTH);
+
+
 
 const snakeLength$ = length$.pipe(
   scan((step, snakeLength) => snakeLength + step),
@@ -36,21 +37,34 @@ const score$ = snakeLength$.pipe(
 );
 
 const scene$ = combineLatest(score$, (score) => { score; });
-const game$ = interval(1000, animationFrame)
-  .subscribe({
-    next: (scene) => {
-      console.log(scene);
-      renderScene(ctx);
-      renderApples(ctx, [
-        { x: 1, y: 1 },
-        { x: 3, y: 3 },
-      ]);
-      renderSnake(ctx, [
-        { x: 4, y: 4 },
-        { x: 4, y: 5 },
-        { x: 4, y: 6 },
-        { x: 4, y: 7 },
-      ]);
-    },
-    complete: () => console.log('game over.'),
+
+//game$.subscribe({
+//  next: (scene) => {
+//    console.log(scene);
+//    renderScene(ctx);
+//    renderApples(ctx, [
+//      { x: 1, y: 1 },
+//      { x: 3, y: 3 },
+//    ]);
+//    renderSnake(ctx, [
+//      { x: 4, y: 4 },
+//      { x: 4, y: 5 },
+//      { x: 4, y: 6 },
+//      { x: 4, y: 7 },
+//    ]);
+//  },
+//  complete: () => console.log('game over.'),
+//});
+
+const game$ = tickSource
+  .withLatestFrom(keydownSource, score$, (_, direction, score) => {
+    return {
+      direction,
+      score,
+    };
   });
+
+game$.subscribe({
+  next: (a) => {
+  }
+});
