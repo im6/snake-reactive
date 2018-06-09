@@ -1,6 +1,17 @@
+import { SNAKE_LENGTH } from './config';
+import { Point2D } from './models';
 
+export function initSnake(){
+  const snake: Array<Point2D> = [];
 
-export function move(snake, direction, snakeLength) {
+  for (let i = SNAKE_LENGTH - 1; i >= 0; i--) {
+    snake.push({ x: i, y: 0 });
+  }
+
+  return snake;
+}
+
+export function move(snake, { direction, snakeLength }) {
   let nx = snake[0].x;
   let ny = snake[0].y;
 

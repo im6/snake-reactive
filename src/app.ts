@@ -1,12 +1,12 @@
 import {
   Observable, animationFrame, BehaviorSubject,
   scan, share, startWith, combineLatest, takeWhile,
-  of, map, interval, tap,
+  of, map, interval, tap, withLatestFrom,
 } from './lib';
 import './snake.ts';
 import { createCanvasElem, renderScene, renderApples, renderSnake } from './canvas';
 import { nextDirection } from './util';
-import { move } from './snake';
+import { move, initSnake, } from './snake';
 import { DIRECTIONS, INITIAL_DIRECTION, SNAKE_LENGTH, POINTS_PER_APPLE } from './config';
 
 const canvas = createCanvasElem();
@@ -24,6 +24,18 @@ const tickSource = interval(1000, animationFrame);
 
 const length$ = new BehaviorSubject<number>(SNAKE_LENGTH);
 
+const snakeSource = tickSource.pipe(
+  withLatestFrom(keydownSource, length$, (_, direction, snakeLength) => {
+    return {
+      direction,
+      snakeLength,
+    };
+  }),
+  scan(move, initSnake()),
+  share(),
+);
+
+snakeSource.subscribe(a => console.log(a));
 
 
 const snakeLength$ = length$.pipe(
@@ -55,16 +67,3 @@ const scene$ = combineLatest(score$, (score) => { score; });
 //  },
 //  complete: () => console.log('game over.'),
 //});
-
-const game$ = tickSource
-  .withLatestFrom(keydownSource, score$, (_, direction, score) => {
-    return {
-      direction,
-      score,
-    };
-  });
-
-game$.subscribe({
-  next: (a) => {
-  }
-});
