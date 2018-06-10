@@ -24,23 +24,14 @@ export function initSnake(){
 }
 
 export function move(snake, { direction, snakeLength }) {
-  let nx = snake[0].x;
-  let ny = snake[0].y;
-
-  nx += 1 * direction.x;
-  ny += 1 * direction.y;
-
-  let tail;
-
-  if (snakeLength > snake.length) {
-    tail = { x: nx, y: ny };
-  } else {
-    tail = snake.pop();
-    tail.x = nx;
-    tail.y = ny;
+  if (snakeLength === snake.length) {
+    snake.pop();
   }
 
-  snake.unshift(tail);
+  const nx = snake[0].x + 1 * direction.x;
+  const ny = snake[0].y + 1 * direction.y;
+  const nextBox = { x: nx, y: ny };
+  snake.unshift(nextBox);
 
   return snake;
 }
