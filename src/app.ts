@@ -5,8 +5,7 @@ import {
 } from './lib';
 import './snake.ts';
 import { createCanvasElem, renderScene, renderApples, renderSnake } from './canvas';
-import { nextDirection } from './util';
-import { move, initSnake, } from './snake';
+import { move, initSnake, nextDirection } from './snake';
 import { DIRECTIONS, INITIAL_DIRECTION, SNAKE_LENGTH, POINTS_PER_APPLE } from './config';
 
 const canvas = createCanvasElem();
@@ -23,9 +22,19 @@ const keydownSource = Observable.fromEvent(document, 'keydown')
 const tickSource = interval(1000, animationFrame);
 
 const length$ = new BehaviorSubject<number>(SNAKE_LENGTH);
+const snakeLength$ = length$
+  .scan((step, snakeLength) => {
+    debugger;
+    return snakeLength + step;
+  })
+  .share();
+
+const score$ = snakeLength$
+  .startWith(0)
+  .scan((score, _) => score + POINTS_PER_APPLE);
 
 const snakeSource = tickSource.pipe(
-  withLatestFrom(keydownSource, length$, (_, direction, snakeLength) => {
+  withLatestFrom(keydownSource, snakeLength$, (_, direction, snakeLength) => {
     return {
       direction,
       snakeLength,
@@ -35,35 +44,15 @@ const snakeSource = tickSource.pipe(
   share(),
 );
 
-snakeSource.subscribe(a => console.log(a));
 
-
-const snakeLength$ = length$.pipe(
-  scan((step, snakeLength) => snakeLength + step),
-  share(),
-);
-
-const score$ = snakeLength$.pipe(
-  startWith(0),
-  scan((score, _) => score + POINTS_PER_APPLE),
-);
-
-const scene$ = combineLatest(score$, (score) => { score; });
-
-//game$.subscribe({
-//  next: (scene) => {
-//    console.log(scene);
-//    renderScene(ctx);
-//    renderApples(ctx, [
-//      { x: 1, y: 1 },
-//      { x: 3, y: 3 },
-//    ]);
-//    renderSnake(ctx, [
-//      { x: 4, y: 4 },
-//      { x: 4, y: 5 },
-//      { x: 4, y: 6 },
-//      { x: 4, y: 7 },
-//    ]);
-//  },
-//  complete: () => console.log('game over.'),
-//});
+snakeSource.subscribe({
+  next: (a) => {
+    renderScene(ctx);
+    renderApples(ctx, [
+      { x: 1, y: 1 },
+      { x: 3, y: 3 },
+    ]);
+    renderSnake(ctx, a);
+  },
+  complete: () => console.log('game over.'),
+});
