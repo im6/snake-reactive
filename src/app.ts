@@ -3,9 +3,13 @@ import {
   scan, share, startWith, combineLatest, takeWhile,
   of, map, interval, tap, withLatestFrom,
 } from './lib';
-import './snake.ts';
-import { createCanvasElem, renderScene, renderApples, renderSnake } from './canvas';
-import { move, initSnake, nextDirection } from './snake';
+
+import {
+  createCanvasElem, renderScene, renderApples, renderSnake,
+  move, eat, initSnake, initApples, nextDirection
+
+} from './service';
+
 import { DIRECTIONS, INITIAL_DIRECTION, SNAKE_LENGTH, POINTS_PER_APPLE } from './config';
 
 const canvas = createCanvasElem();
@@ -23,10 +27,10 @@ const tickSource = interval(1000, animationFrame);
 
 const length$ = new BehaviorSubject<number>(SNAKE_LENGTH);
 const snakeLength$ = length$
-  .scan((step, snakeLength) => {
-    debugger;
-    return snakeLength + step;
-  })
+  //.scan((step, snakeLength) => {
+  //  debugger;
+  //  return snakeLength + step;
+  //})
   .share();
 
 const score$ = snakeLength$
@@ -43,6 +47,11 @@ const snakeSource = tickSource.pipe(
   scan(move, initSnake()),
   share(),
 );
+
+const appleSource = snakeSource
+  .scan(eat, initApples())
+  .distinctUntilChanged()
+  .share();
 
 
 snakeSource.subscribe({

@@ -16,5 +16,6 @@ export const DIRECTIONS: Directions = {
 };
 export const INITIAL_DIRECTION = { x: 1, y: 0 };
 export const APPLE_COLOR = '#eb5e5e';
+export const APPLE_COUNT = 2;
 export const SNAKE_HEAD_COLOR = '#000';
 export const SNAKE_BODY_COLOR = '#5dd9aa';
