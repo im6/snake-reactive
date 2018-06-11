@@ -6,6 +6,8 @@ import {
   SNAKE_BODY_COLOR, SNAKE_HEAD_COLOR, COLS, ROWS, APPLE_COUNT
 } from './config';
 
+// canvas operation
+
 function renderBackground(ctx: CanvasRenderingContext2D) {
   ctx.fillStyle = '#EEE';
   ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
@@ -23,11 +25,17 @@ function getSnakeCellColor(index: number) {
   return index === 0 ? SNAKE_HEAD_COLOR : SNAKE_BODY_COLOR;
 }
 
+// snake movement
+
 function wrapBounds(point: Point2D) {
   point.x = point.x >= COLS ? 0 : point.x < 0 ? COLS - 1 : point.x;
   point.y = point.y >= ROWS ? 0 : point.y < 0 ? ROWS - 1 : point.y;
 
   return point;
+}
+
+function checkCollision(a, b) {
+  return a.x === b.x && a.y === b.y;
 }
 
 function isEmptyCell(position: Point2D, snake: Point2D[]): boolean {
@@ -46,16 +54,15 @@ function getRandomPosition(snake: Array<Point2D> = []): Point2D {
 
   if (isEmptyCell(position, snake)) {
     return position;
+  } else {
+    return getRandomPosition(snake);
   }
-
-  return getRandomPosition(snake);
 }
 
 
+// ======================================
 // ==========  export  ==================
-export function checkCollision(a, b) {
-  return a.x === b.x && a.y === b.y;
-}
+// ======================================
 
 export function createCanvasElem() {
   const canvas = document.createElement('canvas');
@@ -122,7 +129,7 @@ export function move(snake, { direction, snakeLength }) {
 }
 
 export function eat(apples: Array<Point2D>, snake) {
-  let head = snake[0];
+  const head = snake[0];
 
   for (let i = 0; i < apples.length; i++) {
     if (checkCollision(apples[i], head)) {
