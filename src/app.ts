@@ -6,8 +6,7 @@ import {
 
 import {
   createCanvasElem, renderScene, renderApples, renderSnake,
-  move, eat, initSnake, initApples, nextDirection
-
+  move, eat, initSnake, initApples, nextDirection,
 } from './service';
 
 import { DIRECTIONS, INITIAL_DIRECTION, SNAKE_LENGTH, POINTS_PER_APPLE } from './config';
@@ -27,10 +26,10 @@ const tickSource = interval(1000, animationFrame);
 
 const length$ = new BehaviorSubject<number>(SNAKE_LENGTH);
 const snakeLength$ = length$
-  //.scan((step, snakeLength) => {
-  //  debugger;
-  //  return snakeLength + step;
-  //})
+  .scan((step, snakeLength) => {
+    debugger;
+    return snakeLength + step;
+  })
   .share();
 
 const score$ = snakeLength$

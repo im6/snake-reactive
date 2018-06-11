@@ -1,9 +1,8 @@
 
-import { SNAKE_LENGTH } from './config';
 import { Scene, Point2D } from './models';
 import {
   CELL_SIZE, GAP_SIZE, CANVAS_HEIGHT, CANVAS_WIDTH, APPLE_COLOR,
-  SNAKE_BODY_COLOR, SNAKE_HEAD_COLOR, COLS, ROWS, APPLE_COUNT
+  SNAKE_BODY_COLOR, SNAKE_HEAD_COLOR, COLS, ROWS, APPLE_COUNT, SNAKE_LENGTH,
 } from './config';
 
 // canvas operation
@@ -46,17 +45,13 @@ function getRandomNumber(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
-function getRandomPosition(snake: Array<Point2D> = []): Point2D {
-  let position = {
+function getRandomPosition(snake: Point2D[] = []): Point2D {
+  const position = {
     x: getRandomNumber(0, COLS - 1),
-    y: getRandomNumber(0, ROWS - 1)
+    y: getRandomNumber(0, ROWS - 1),
   };
 
-  if (isEmptyCell(position, snake)) {
-    return position;
-  } else {
-    return getRandomPosition(snake);
-  }
+  return isEmptyCell(position, snake) ? position : getRandomPosition(snake);
 }
 
 
@@ -95,20 +90,20 @@ export function nextDirection(previous, next) {
   return next;
 }
 
-export function initSnake(){
-  const snake: Array<Point2D> = [];
+export function initSnake() {
+  const snake: Point2D[] = [];
 
-  for (let i = SNAKE_LENGTH - 1; i >= 0; i--) {
+  for (let i = SNAKE_LENGTH - 1; i >= 0; i -= 1) {
     snake.push({ x: i, y: 0 });
   }
 
   return snake;
 }
 
-export function initApples(): Array<Point2D> {
+export function initApples(): Point2D[] {
   const apples = [];
 
-  for (let i = 0; i < APPLE_COUNT; i++) {
+  for (let i = 0; i < APPLE_COUNT; i += 1) {
     apples.push(getRandomPosition());
   }
 
@@ -128,10 +123,10 @@ export function move(snake, { direction, snakeLength }) {
   return snake;
 }
 
-export function eat(apples: Array<Point2D>, snake) {
+export function eat(apples: Point2D[], snake) {
   const head = snake[0];
 
-  for (let i = 0; i < apples.length; i++) {
+  for (let i = 0; i < apples.length; i += 1) {
     if (checkCollision(apples[i], head)) {
       apples.splice(i, 1);
       return [...apples, getRandomPosition(snake)];
