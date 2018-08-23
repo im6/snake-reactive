@@ -22,7 +22,7 @@ const keydownSource = Observable.fromEvent(document, 'keydown')
   .startWith(INITIAL_DIRECTION)
   .distinctUntilChanged();
 
-const tickSource = interval(1000, animationFrame);
+const tickSource = interval(400, animationFrame);
 
 const length$ = new BehaviorSubject<number>(SNAKE_LENGTH);
 const snakeLength$ = length$
