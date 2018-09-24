@@ -9,7 +9,10 @@ import {
   move, eat, initSnake, initApples, nextDirection,
 } from './service';
 
-import { DIRECTIONS, INITIAL_DIRECTION, SNAKE_LENGTH, POINTS_PER_APPLE } from './config';
+import {
+  DIRECTIONS, INITIAL_DIRECTION,
+  SNAKE_LENGTH, POINTS_PER_APPLE
+} from './config';
 
 const canvas = createCanvasElem();
 document.body.appendChild(canvas);
@@ -26,10 +29,7 @@ const tickSource = interval(400, animationFrame);
 
 const length$ = new BehaviorSubject<number>(SNAKE_LENGTH);
 const snakeLength$ = length$
-  .scan((step, snakeLength) => {
-    debugger;
-    return snakeLength + step;
-  })
+  .scan((step, snakeLength) => snakeLength + step)
   .share();
 
 const score$ = snakeLength$
@@ -64,3 +64,8 @@ snakeSource.subscribe({
   },
   complete: () => console.log('game over.'),
 });
+
+
+
+
+// source: https://github.com/thoughtram/reactive-snake/blob/master/src/main.ts
