@@ -1,9 +1,8 @@
 module.exports = {
   mode: "development",
   devtool: "inline-source-map",
-  entry: ['babel-polyfill', './src/app.ts'],
-  resolve:
-  {
+  entry: ['./src/app.ts'],
+  resolve: {
     extensions: ['.ts', '.js', '.json']
   },
   output: {
@@ -12,17 +11,11 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.ts$/,
-        enforce: 'pre',
-        loader: 'tslint-loader',
-        options: { /* Loader options go here */ }
-      },
-      {
         test: /\.tsx?$/,
         exclude: /node_modules/,
         use: [
           {
-            loader: 'babel-loader',
+            loader: 'tslint-loader',
           },
           {
             loader: 'ts-loader'
