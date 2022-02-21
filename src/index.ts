@@ -1,6 +1,12 @@
 import "./style.less";
-import { snakeLength$ } from "./observables";
+import { snake$ } from "./observables";
+import { renderBackground, drawSnake, prepareCanvasSize } from "./helper";
 
-snakeLength$.subscribe((v) => {
-  console.log(v);
+const canvasElem = document.getElementById("appCan") as HTMLCanvasElement;
+const ctx = canvasElem.getContext("2d");
+prepareCanvasSize(canvasElem);
+
+snake$.subscribe((v) => {
+  renderBackground(ctx);
+  drawSnake(ctx, v);
 });

@@ -2,20 +2,21 @@ import {
   interval,
   fromEvent,
   animationFrameScheduler,
-  BehaviorSubject,
+  of,
+  combineLatest,
 } from "rxjs";
 import {
   map,
   filter,
   startWith,
   scan,
-  share,
   distinctUntilChanged,
+  withLatestFrom,
 } from "rxjs/operators";
 import { DIRECTIONS, INITIAL_DIRECTION, SNAKE_LENGTH } from "./constant";
-import { nextDirection } from "./helper";
+import { initializeSnake, nextDirection, move } from "./helper";
 
-export const keydownSource = fromEvent(document, "keydown").pipe(
+export const keydown$ = fromEvent(document, "keydown").pipe(
   map((event: KeyboardEvent) => DIRECTIONS[event.key]),
   filter((dir) => Boolean(dir)), // remove unrelated key event
   startWith(INITIAL_DIRECTION),
@@ -23,9 +24,13 @@ export const keydownSource = fromEvent(document, "keydown").pipe(
   distinctUntilChanged()
 );
 
-export const tickSource = interval(400, animationFrameScheduler);
-export const length$ = new BehaviorSubject<number>(SNAKE_LENGTH);
-export const snakeLength$ = length$.pipe(
-  scan((step, snakeLength) => snakeLength + step),
-  share()
+export const ticks$ = interval(1000, animationFrameScheduler);
+export const snakeLength$ = of(0);
+
+export const snake$ = ticks$.pipe(
+  withLatestFrom(keydown$, snakeLength$, (_, direction, snakeLen) => [
+    direction,
+    snakeLen,
+  ]),
+  scan(move, initializeSnake(SNAKE_LENGTH))
 );
