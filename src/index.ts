@@ -1,12 +1,26 @@
 import "./style.less";
-import { snake$ } from "./observables";
-import { renderBackground, drawSnake, prepareCanvasSize } from "./helper";
+import { game$ } from "./observables";
+import {
+  drawBackground,
+  drawSnake,
+  drawApple,
+  drawScore,
+  prepareCanvasSize,
+  renderGameOver,
+} from "./util/canvas";
+import { SNAKE_LENGTH } from "./constant";
 
 const canvasElem = document.getElementById("appCan") as HTMLCanvasElement;
 const ctx = canvasElem.getContext("2d");
 prepareCanvasSize(canvasElem);
 
-snake$.subscribe((v) => {
-  renderBackground(ctx);
-  drawSnake(ctx, v);
+game$.subscribe({
+  next: (scene) => {
+    const [snake, apple] = scene;
+    drawBackground(ctx);
+    drawScore(ctx, snake.length - SNAKE_LENGTH);
+    drawSnake(ctx, snake);
+    drawApple(ctx, apple);
+  },
+  complete: () => renderGameOver(ctx),
 });
