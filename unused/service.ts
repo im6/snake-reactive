@@ -1,20 +1,32 @@
-
-import { Scene, Point2D } from './models';
+import { Scene, Point2D } from "./interface";
 import {
-  CELL_SIZE, GAP_SIZE, CANVAS_HEIGHT, CANVAS_WIDTH, APPLE_COLOR,
-  SNAKE_BODY_COLOR, SNAKE_HEAD_COLOR, COLS, ROWS, APPLE_COUNT, SNAKE_LENGTH,
-} from './config';
+  CELL_SIZE,
+  GAP_SIZE,
+  CANVAS_HEIGHT,
+  CANVAS_WIDTH,
+  APPLE_COLOR,
+  SNAKE_BODY_COLOR,
+  SNAKE_HEAD_COLOR,
+  COLS,
+  ROWS,
+  APPLE_COUNT,
+  SNAKE_LENGTH,
+} from "./config";
 
 // canvas operation
 
 function renderBackground(ctx: CanvasRenderingContext2D) {
-  ctx.fillStyle = '#EEE';
+  ctx.fillStyle = "#EEE";
   ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 }
 
-function paintCell(ctx: CanvasRenderingContext2D, point: Point2D, color: string) {
-  const x = point.x * CELL_SIZE + (point.x * GAP_SIZE);
-  const y = point.y * CELL_SIZE + (point.y * GAP_SIZE);
+function paintCell(
+  ctx: CanvasRenderingContext2D,
+  point: Point2D,
+  color: string
+) {
+  const x = point.x * CELL_SIZE + point.x * GAP_SIZE;
+  const y = point.y * CELL_SIZE + point.y * GAP_SIZE;
 
   ctx.fillStyle = color;
   ctx.fillRect(x, y, CELL_SIZE, CELL_SIZE);
@@ -38,7 +50,7 @@ function checkCollision(a, b) {
 }
 
 function isEmptyCell(position: Point2D, snake: Point2D[]): boolean {
-  return !snake.some(segment => checkCollision(segment, position));
+  return !snake.some((segment) => checkCollision(segment, position));
 }
 
 function getRandomNumber(min, max) {
@@ -54,13 +66,12 @@ function getRandomPosition(snake: Point2D[] = []): Point2D {
   return isEmptyCell(position, snake) ? position : getRandomPosition(snake);
 }
 
-
 // ======================================
 // ==========  export  ==================
 // ======================================
 
 export function createCanvasElem() {
-  const canvas = document.createElement('canvas');
+  const canvas = document.createElement("canvas");
   canvas.width = CANVAS_WIDTH;
   canvas.height = CANVAS_HEIGHT;
   return canvas;
@@ -71,11 +82,13 @@ export function renderScene(ctx: CanvasRenderingContext2D, scene?: Scene) {
 }
 
 export function renderApples(ctx: CanvasRenderingContext2D, apples: Point2D[]) {
-  apples.forEach(apple => paintCell(ctx, apple, APPLE_COLOR));
+  apples.forEach((apple) => paintCell(ctx, apple, APPLE_COLOR));
 }
 
 export function renderSnake(ctx: CanvasRenderingContext2D, snake: Point2D[]) {
-  snake.forEach((segment, index) => paintCell(ctx, wrapBounds(segment), getSnakeCellColor(index)));
+  snake.forEach((segment, index) =>
+    paintCell(ctx, wrapBounds(segment), getSnakeCellColor(index))
+  );
 }
 
 export function nextDirection(previous, next) {
@@ -135,5 +148,3 @@ export function eat(apples: Point2D[], snake) {
 
   return apples;
 }
-
-

@@ -1,26 +1,44 @@
 import {
-  Observable, animationFrame, BehaviorSubject,
-  scan, share, startWith, combineLatest, takeWhile,
-  of, map, interval, tap, withLatestFrom,
-} from './lib';
+  Observable,
+  animationFrame,
+  BehaviorSubject,
+  scan,
+  share,
+  startWith,
+  combineLatest,
+  takeWhile,
+  of,
+  map,
+  interval,
+  tap,
+  withLatestFrom,
+} from "./lib";
 
 import {
-  createCanvasElem, renderScene, renderApples, renderSnake,
-  move, eat, initSnake, initApples, nextDirection,
-} from './service';
+  createCanvasElem,
+  renderScene,
+  renderApples,
+  renderSnake,
+  move,
+  eat,
+  initSnake,
+  initApples,
+  nextDirection,
+} from "./service";
 
 import {
-  DIRECTIONS, INITIAL_DIRECTION,
-  SNAKE_LENGTH, POINTS_PER_APPLE
-} from './config';
+  DIRECTIONS,
+  INITIAL_DIRECTION,
+  SNAKE_LENGTH,
+  POINTS_PER_APPLE,
+} from "./config";
 
-const canvas = createCanvasElem();
-document.body.appendChild(canvas);
-const ctx = canvas.getContext('2d');
+const canvas = document.getElementById("appCan");
+const ctx = canvas.getContext("2d");
 
-const keydownSource = Observable.fromEvent(document, 'keydown')
+const keydownSource = Observable.fromEvent(document, "keydown")
   .map((event: KeyboardEvent) => DIRECTIONS[event.keyCode])
-  .filter(drc => !!drc)
+  .filter((drc) => !!drc)
   .scan(nextDirection)
   .startWith(INITIAL_DIRECTION)
   .distinctUntilChanged();
@@ -44,14 +62,13 @@ const snakeSource = tickSource.pipe(
     };
   }),
   scan(move, initSnake()),
-  share(),
+  share()
 );
 
 const appleSource = snakeSource
   .scan(eat, initApples())
   .distinctUntilChanged()
   .share();
-
 
 snakeSource.subscribe({
   next: (a) => {
@@ -62,10 +79,7 @@ snakeSource.subscribe({
     ]);
     renderSnake(ctx, a);
   },
-  complete: () => console.log('game over.'),
+  complete: () => console.log("game over."),
 });
-
-
-
 
 // source: https://github.com/thoughtram/reactive-snake/blob/master/src/main.ts

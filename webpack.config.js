@@ -5,11 +5,11 @@ module.exports = {
   devtool: "inline-source-map",
   entry: "./src/index",
   resolve: {
-    extensions: [".ts"],
+    extensions: [".ts", ".js"],
   },
   output: {
     filename: "bundle.js",
-    path: path.resolve(__dirname, "dist"),
+    path: path.resolve(__dirname, "docs"),
   },
   module: {
     rules: [
@@ -18,12 +18,17 @@ module.exports = {
         use: "ts-loader",
         exclude: /node_modules/,
       },
+      {
+        test: /\.less$/,
+        use: ["style-loader", "css-loader", "less-loader"],
+      },
     ],
   },
   devServer: {
     static: {
-      directory: path.join(__dirname, "../docs"),
+      directory: path.join(__dirname, "docs"),
     },
+    port: 3000,
     hot: true,
   },
 };
