@@ -8,6 +8,7 @@ import {
 
 import {
   map,
+  buffer,
   filter,
   startWith,
   scan,
@@ -29,16 +30,18 @@ import {
 
 import { DIRECTIONS, FPS, INITIAL_DIRECTION, SNAKE_LENGTH } from "./constant";
 
+const ticks$ = interval(800);
 const keydown$ = fromEvent(document, "keydown").pipe(
-  map((event: KeyboardEvent) => DIRECTIONS[event.key]),
-  filter((dir) => Boolean(dir)), // remove unrelated key event
+  buffer(ticks$),
+  filter((events: KeyboardEvent[]) => events.length > 0),
+  map((events: KeyboardEvent[]) => DIRECTIONS[events[events.length - 1].key]),
+  filter((dir) => Boolean(dir)),
   startWith(INITIAL_DIRECTION),
-  scan(nextDirection), // create cache to check previous direction
+  scan(nextDirection),
   distinctUntilChanged()
 );
 
 const eatBhv$ = new BehaviorSubject<number>(0);
-const ticks$ = interval(500);
 const snakeLen$ = eatBhv$.pipe(scan((acc, cur) => acc + cur, SNAKE_LENGTH));
 const snake$ = ticks$.pipe(
   withLatestFrom(keydown$, snakeLen$, (_, direction, snakeLen) => [
