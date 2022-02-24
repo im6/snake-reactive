@@ -32,6 +32,7 @@ export const initializeSnake = (initLen: number): Point2D[] => {
   return snake;
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const move = (acc: Point2D[], cur: any): Point2D[] => {
   const [direction, snakeLen] = cur;
   const dir = direction as Point2D;
@@ -64,6 +65,7 @@ export const auditApplePosition = (
   return overlap ? createApple() : apple;
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const isGameOver = (scene: any): boolean => {
   const snake = scene[0];
   const head = snake[0];
