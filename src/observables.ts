@@ -28,9 +28,15 @@ import {
   auditApplePosition,
 } from "./util/game";
 
-import { DIRECTIONS, FPS, INITIAL_DIRECTION, SNAKE_LENGTH } from "./constant";
+import {
+  SPEED,
+  DIRECTIONS,
+  FPS,
+  INITIAL_DIRECTION,
+  SNAKE_LENGTH,
+} from "./constant";
 
-const ticks$ = interval(800);
+const ticks$ = interval(SPEED);
 const keydown$ = fromEvent(document, "keydown").pipe(
   buffer(ticks$),
   filter((events: KeyboardEvent[]) => events.length > 0),

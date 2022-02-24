@@ -15,3 +15,4 @@ export const CANVAS_WIDTH = 20; // not actual pixel, but number of box width
 export const CANVAS_HEIGHT = 20; // same as above
 export const APPLE_COLOR = "#ff7148";
 export const FPS = 60;
+export const SPEED = 400;
