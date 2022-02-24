@@ -1,15 +1,13 @@
 const path = require("path");
 
-module.exports = {
-  mode: "development",
-  devtool: "inline-source-map",
+exports.baseConfig = {
   entry: "./src/index",
   resolve: {
     extensions: [".ts", ".js"],
   },
   output: {
     filename: "bundle.js",
-    path: path.resolve(__dirname, "docs"),
+    path: path.resolve(__dirname, "../docs"),
   },
   module: {
     rules: [
@@ -23,12 +21,5 @@ module.exports = {
         use: ["style-loader", "css-loader", "less-loader"],
       },
     ],
-  },
-  devServer: {
-    static: {
-      directory: path.join(__dirname, "docs"),
-    },
-    port: 3000,
-    hot: true,
   },
 };
