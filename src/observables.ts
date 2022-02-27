@@ -70,6 +70,7 @@ apple$
   .pipe(
     skip(1),
     tap(() => {
+      console.log("emit");
       eatBhv$.next(1);
     })
   )
@@ -78,6 +79,10 @@ apple$
 const scene$ = snake$.pipe(
   combineLatestWith(apple$),
   takeWhile(isGameOver),
+  map((v) => {
+    console.log(v);
+    return v;
+  }),
   endWith(GAME_OVER_SIG)
 );
 export const game$ = interval(1000 / FPS, animationFrameScheduler).pipe(
