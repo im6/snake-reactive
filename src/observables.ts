@@ -17,6 +17,8 @@ import {
   share,
   skip,
   takeWhile,
+  endWith,
+  tap,
 } from "rxjs/operators";
 
 import {
@@ -32,6 +34,7 @@ import {
   SPEED,
   DIRECTIONS,
   FPS,
+  GAME_OVER_SIG,
   INITIAL_DIRECTION,
   SNAKE_LENGTH,
 } from "./constant";
@@ -63,13 +66,21 @@ const apple$ = snake$.pipe(
   share()
 );
 
-apple$.pipe(skip(1)).subscribe(() => {
-  eatBhv$.next(1);
-});
+apple$
+  .pipe(
+    skip(1),
+    tap(() => {
+      eatBhv$.next(1);
+    })
+  )
+  .subscribe();
 
-const scene$ = snake$.pipe(combineLatestWith(apple$));
-
+const scene$ = snake$.pipe(
+  combineLatestWith(apple$),
+  takeWhile(isGameOver),
+  endWith(GAME_OVER_SIG)
+);
 export const game$ = interval(1000 / FPS, animationFrameScheduler).pipe(
   withLatestFrom(scene$, (_, scene$) => scene$),
-  takeWhile(isGameOver)
+  takeWhile((a) => a !== GAME_OVER_SIG)
 );
