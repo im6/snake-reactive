@@ -56,13 +56,13 @@ export const auditApplePosition = (
   apple: Point2D,
   snake: Point2D[]
 ): Point2D => {
-  let overlap = false;
-  snake.forEach((v) => {
-    if (detectCollision(v, apple)) {
-      overlap = true;
-    }
-  });
-  return overlap ? createApple() : apple;
+  let potentialApple = apple;
+  let overlap = snake.some((v) => detectCollision(v, potentialApple));
+  while (overlap) {
+    potentialApple = createApple();
+    overlap = snake.some((v) => detectCollision(v, potentialApple));
+  }
+  return potentialApple;
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
