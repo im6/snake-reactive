@@ -4,9 +4,6 @@ import {
   fromEvent,
   animationFrameScheduler,
   combineLatestWith,
-} from "rxjs";
-
-import {
   map,
   buffer,
   filter,
@@ -19,7 +16,7 @@ import {
   takeWhile,
   endWith,
   tap,
-} from "rxjs/operators";
+} from "rxjs";
 
 import {
   initializeSnake,
