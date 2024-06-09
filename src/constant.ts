@@ -6,6 +6,7 @@ export const DIRECTIONS: Directions = {
   w: { x: 0, y: -1 },
   s: { x: 0, y: 1 },
 };
+
 export const INITIAL_DIRECTION = DIRECTIONS.d;
 export const SNAKE_LENGTH = 2;
 export const BOX_SIZE = 15;
